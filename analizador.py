@@ -4,7 +4,7 @@ import ply.lex as lex
 tokens = (
     'NUMBERS','FLOAT',
     'OPMAS','OPMENOS','OPMULTIPLICAR','OPDIVISOR','OPIGUAL',
-    'LPAREN','RPAREN','SEMICOLON'
+    'LPAREN','RPAREN','SEMICOLON','CADENA'
 )
 
 reserved = {
@@ -126,6 +126,10 @@ def t_FLOAT(t):
     t.value = float(t.value)
     return t
 
+def t_CADENA(t):
+    r'[A-z]+'
+    t.value = str(t.value)
+    return t
 
 # Define a rule so we can track line numbers
 def t_newline(t):
@@ -149,6 +153,7 @@ lexer = lex.lex()
 # Test it out
 data = '''
 23+2.5;
+hola;
  '''
 
 # Give the lexer some input
