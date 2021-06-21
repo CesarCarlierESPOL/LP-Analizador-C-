@@ -29,6 +29,9 @@ reserved = {
     'and': 'AND',
     'and_eq': 'AND_EQ',
     'asm': 'ASM',
+    '__abstract': '__ABSTRACT',
+    'delete': 'DELETE',
+    'this': 'THIS',
     'auto': 'AUTO',
     'bitand': 'BITAND',
     'constinit': 'CONSTINIT',
@@ -50,6 +53,11 @@ reserved = {
     'switch': 'SWITCH',
     'template': 'TEMPLATE',
     'this': 'THIS',
+    'dinamic_cast': 'DINAMIC_CAST',
+    'const_cast': 'CONST_CAST',
+    'new': 'NEW',
+    'return': 'RETURN',
+    'noreturn': 'NORETURN',
     'thread_local': 'THREAD_LOCAL',
     'bitor': 'BITOR',
     'bool': 'BOOL',
@@ -104,7 +112,8 @@ reserved = {
     'xor_eq': 'XOR_EQ',
     '!': '!',
     '#': '#',
-    '%': '%'
+    '%': '%',
+
 }
 # Regular expression rules for simple tokens
 t_OPMAS = r'\+'
