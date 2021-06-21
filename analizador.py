@@ -3,9 +3,10 @@ import ply.lex as lex
 # lista de tokens
 tokens = (
     'NUMBERS', 'FLOAT',
-    'OPMAS', 'OPMENOS', 'OPMULTIPLICAR', 'OPDIVISOR', 'OPIGUAL',
+    'OPMAS', 'OPMENOS', 'OPMULTIPLICAR', 'OPDIVISOR', 'OPMODULE', 'OPIGUAL',
     'LPAREN', 'RPAREN', 'SEMICOLON', 'CADENA'
 )
+
 
 reserved = {
     'while': 'WHILE',
@@ -124,7 +125,7 @@ t_OPIGUAL = r'='
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
 t_SEMICOLON = r';'
-t_OPMODULO = r'%'
+t_OPMODULE = r'%'
 
 
 def t_NUMBERS(t):
