@@ -11,6 +11,46 @@ precedence = (
 
 start = "program"
 
+def p_program(p):
+    """
+    program : function program
+            | external-declaration program
+            | empty
+    """
+
+def p_assignment(p):
+    """
+    assignment : ID ASSIGN assignment
+               | ID ASSIGN function_call
+               | ID ASSIGN array_usage
+               | array_usage ASSIGN assignment
+               | ID COMMA assignment
+               | NUMBER COMMA assignment
+               | ID PLUS assignment
+               | ID MINUS assignment
+               | ID TIMES assignment
+               | ID DIVIDE assignment
+               | ID MODULUS assignment
+    """
+    
+def p_function_call(p):
+    """
+    function_call : ID LPAREN RPAREN
+                  | ID LPAREN assignment RPAREN
+    """
+
+def p_type(p):
+    """
+    type : INT
+         | FLOAT
+         | CHAR
+         | VOID
+    """
+
+def p_array_usage(p):
+    """
+    array_usage : ID LBRACKET assignment RBRACKET
+    """
 
 def p_macro_definition(p):
     """
