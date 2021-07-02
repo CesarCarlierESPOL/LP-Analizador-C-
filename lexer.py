@@ -1,8 +1,9 @@
 import ply.lex as lex
+reglas = []
 
 # lista de tokens
 
-#Cesar: Aumente tokens faltantes
+# Cesar: Aumente tokens faltantes
 tokens = [
     "NUMBER",
     "LETTER",
@@ -36,7 +37,7 @@ tokens = [
     "EOF"
 ]
 
-#Cesar: Reduje numero de palabras reservadas, utilizabamos toda la libreria de C++, que no ibamos a cubrir
+# Cesar: Reduje numero de palabras reservadas, utilizabamos toda la libreria de C++, que no ibamos a cubrir
 reserved = {
     "int": "INT",
     "char": "CHAR",
@@ -53,7 +54,7 @@ reserved = {
 
 tokens += list(reserved.values())
 
-#Cesar: Ajustando la definicion de tokens para el cambio.
+# Cesar: Ajustando la definicion de tokens para el cambio.
 t_PLUS = r"\+"
 t_MINUS = r"\-"
 t_TIMES = r"\*"
@@ -80,7 +81,7 @@ t_ASSIGN = r"\="
 t_EOF = r"\$"
 
 
-#Cesar modifique para que esto funcione con los nuevos nombres
+# Cesar modifique para que esto funcione con los nuevos nombres
 def t_COMMENT(t):
     r"\/\/.*"
     return t
@@ -124,11 +125,32 @@ def t_newline(t):
 t_ignore = " \t"
 
 # Regla para errores
+
+
 def t_error(t):
-    print("Illegal character '%s'" % t.value[0])
+    print("No es reconocido '%s'" % t.value[0])
+    if t is not None:
+        reglas.append("Error, no se encontro el token '%s'" % t.value[0])
+    else:
+        print("Syntax Error!!")
+        reglas.append("Syntax Error")  # añade el error a el arreglo
     t.lexer.skip(1)
+
 
 lexer = lex.lex()
 
-def tokenize(data):
+
+def analizarLexico(data):
+    reglas.clear()  # limpio los errores
     lexer.input(data)
+    resultados = ""
+    while True:
+        tok = lexer.token()
+        if not tok:
+            break
+        resultado = str(tok) + "\n"
+        resultados = resultados + resultado
+    return resultados, reglas
+
+# def tokenize(data):
+#    lexer.input(data)

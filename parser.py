@@ -1,6 +1,6 @@
 import ply.yacc as yacc
 from lexer import tokens, lexer
-
+reglas = []
 success = True
 
 precedence = (
@@ -13,12 +13,14 @@ precedence = (
 
 start = "program"
 
+
 def p_program(p):
     """
     program : function program
             | external-declaration program
             | empty
     """
+
 
 def p_external_declaration(p):
     """
@@ -29,6 +31,7 @@ def p_external_declaration(p):
                          | file_inclusion
     """
 
+
 def p_declaration(p):
     """
     declaration : type assignment SEMICOLON
@@ -37,6 +40,7 @@ def p_declaration(p):
                 | array_usage SEMICOLON
                 | type array_usage SEMICOLON
     """
+
 
 def p_assignment(p):
     """
@@ -70,11 +74,13 @@ def p_assignment(p):
                | LETTER
     """
 
+
 def p_function_call(p):
     """
     function_call : ID LPAREN RPAREN
                   | ID LPAREN assignment RPAREN
     """
+
 
 def p_type(p):
     """
@@ -84,10 +90,12 @@ def p_type(p):
          | VOID
     """
 
+
 def p_array_usage(p):
     """
     array_usage : ID LBRACKET assignment RBRACKET
     """
+
 
 def p_function(p):
     """
@@ -106,6 +114,7 @@ def p_function(p):
               | return-statement
     """
 
+
 def p_iteration_statement(p):
     """
     iteration_statement : WHILE LPAREN expression RPAREN compound_statement
@@ -113,6 +122,7 @@ def p_iteration_statement(p):
                         | DO compound_statement WHILE LPAREN expression RPAREN SEMICOLON
                         | DO statement WHILE LPAREN expression RPAREN SEMICOLON
     """
+
 
 def p_selection_statement(p):
     """
@@ -123,6 +133,7 @@ def p_selection_statement(p):
                         | IF LPAREN expression RPAREN statement ELSE compound_statement
                         | IF LPAREN expression RPAREN statement ELSE statement
     """
+
 
 def p_return_statement(p):
     """
@@ -143,6 +154,7 @@ def p_expression(p):
                | array_usage
     """
 
+
 def p_macro_definition(p):
     """
     macro_definition : POUND DEFINE ID assignment
@@ -159,8 +171,16 @@ def p_file_inclusion(p):
 
 
 def p_error(p):
-    if p:
-        print("Syntax error near '%s', line '%s'" % (p.value, p.lineno - 1))
+    if p is not None:
+        reglas.append("Syntax Error")
+
+    else:
+        print("Syntax Error!!")
+        reglas.append("Syntax Error")  # añade el error a el arreglo
+
+# def p_error(p):
+#    if p:
+#        print("Syntax error near '%s', line '%s'" % (p.value, p.lineno - 1))
 
 
 def p_empty(p):
@@ -203,3 +223,14 @@ if success:
     print("Código Válido")
 else:
     print("Código no Válido")
+
+# funcion del analizador
+
+
+def analizarSintactico(s):
+    reglas.clear()  # limpio los errores
+    print(s)
+    result = str(parser.parse(s))
+    print(result)
+
+    return result, reglas

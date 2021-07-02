@@ -1,0 +1,5 @@
+for(f=1;f<=100;f++)
+        {
+            Console.Write(f);
+            Console.Write("-");
+        }
