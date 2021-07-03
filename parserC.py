@@ -1,5 +1,5 @@
 import ply.yacc as yacc
-from lexer import tokens, lexer
+from lexerC import tokens, lexer
 reglas = []
 success = True
 
@@ -232,5 +232,4 @@ def analizarSintactico(s):
     print(s)
     result = str(parser.parse(s))
     print(result)
-
     return result, reglas
