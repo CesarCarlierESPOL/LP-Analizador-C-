@@ -64,46 +64,6 @@ class Ventana:
         else:
             ventanaNueva(resultados)
 
-    def analizarSintactico(self):
-        print("Se realizara un analizador sintáctico!")
-        entrada = self.txt.get()
-        resultados, error = analizarSintactico(entrada)
-        ventanaNueva(resultados + str(error))
-
-    def limpiar(self):
-        self.txt.delete(first=0, last=10000)
-
-# Metodo de Nueva ventana para mostrar si lo ingresado e correcto o no
-
-
-def ventanaNueva(resultados):
-    toplevel = tk.Toplevel(width=100)
-    container = tk.Frame(toplevel)
-    canvas = tk.Canvas(container)
-    scrollbar = tk.Scrollbar(
-        container, orient="vertical", command=canvas.yview)
-    scrollable_frame = tk.Frame(canvas)
-
-    scrollable_frame.bind(
-        "<Configure>",
-        lambda e: canvas.configure(
-            scrollregion=canvas.bbox("all")
-        )
-    )
-
-    canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-
-    canvas.configure(yscrollcommand=scrollbar.set)
-    labelresult = tk.Label(scrollable_frame, text=resultados, justify=tk.LEFT)
-    labelresult.pack()
-    labelresult.config(fg="blue",
-                       bg="white",
-                       font=("Arial", 12)
-                       )
-
-    container.pack()
-    canvas.pack(side="left", fill="both", expand=True)
-    scrollbar.pack(side="right", fill="y")
 
 
 # Creamos la aplicación, la ventana e iniciamos el bucle
