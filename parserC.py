@@ -44,41 +44,44 @@ def p_declaration(p):
 
 def p_assignment(p):
     """
-    assignment : ID ASSIGN assignment
-               | ID ASSIGN function_call
-               | ID ASSIGN array_usage
+    assignment : IDENTIFIER ASSIGN assignment
+               | IDENTIFIER ASSIGN function_call
+               | IDENTIFIER ASSIGN array_usage
                | array_usage ASSIGN assignment
-               | ID COMMA assignment
-               | NUMBER COMMA assignment
-               | ID PLUS assignment
-               | ID MINUS assignment
-               | ID TIMES assignment
-               | ID DIVIDE assignment
-               | ID MODULUS assignment
-               | NUMBER PLUS assignment
-               | NUMBER MINUS assignment
-               | NUMBER TIMES assignment
-               | NUMBER DIVIDE assignment
-               | NUMBER MODULUS assignment
+               | IDENTIFIER COMMA assignment
+               | INTEGER COMMA assignment
+               | IDENTIFIER PLUS assignment
+               | IDENTIFIER MINUS assignment
+               | IDENTIFIER TIMES assignment
+               | IDENTIFIER DIVIDE assignment
+               | IDENTIFIER MODULUS assignment
+               | INTEGER PLUS assignment
+               | INTEGER MINUS assignment
+               | INTEGER TIMES assignment
+               | INTEGER DIVIDE assignment
+               | INTEGER MODULUS assignment
                | APOST assignment APOST
                | LPAREN assignment RPAREN
                | MINUS assignment
-               | NUMBER PLUS PLUS
-               | ID PLUS PLUS
+               | INTEGER PLUS PLUS
+               | IDENTIFIER PLUS PLUS
                | array_usage PLUS PLUS
-               | NUMBER MINUS MINUS
-               | ID MINUS MINUS
+               | INTEGER MINUS MINUS
+               | IDENTIFIER MINUS MINUS
                | array_usage MINUS MINUS
-               | NUMBER
-               | ID
+               | BOOLEAN
+               | FLOATINGPOINT
+               | INTEGER
+               | STRING
+               | IDENTIFIER
                | LETTER
     """
 
 
 def p_function_call(p):
     """
-    function_call : ID LPAREN RPAREN
-                  | ID LPAREN assignment RPAREN
+    function_call : IDENTIFIER LPAREN RPAREN
+                  | IDENTIFIER LPAREN assignment RPAREN
     """
 
 
@@ -93,18 +96,18 @@ def p_type(p):
 
 def p_array_usage(p):
     """
-    array_usage : ID LBRACKET assignment RBRACKET
+    array_usage : IDENTIFIER LBRACKET assignment RBRACKET
     """
 
 
 def p_function(p):
     """
-    function : type ID LPAREN argument_list_option RPAREN compound_statement
+    function : type IDENTIFIER LPAREN argument_list_option RPAREN compound_statement
     argument_list_option : argument_list
                          | empty
     argument_list : argument_list COMMA argument
                   | argument
-    argument : type ID
+    argument : type IDENTIFIER
     compound_statement : LBRACE statement_list RBRACE
     statement_list : statement_list statement
                    | empty
@@ -157,7 +160,7 @@ def p_expression(p):
 
 def p_macro_definition(p):
     """
-    macro_definition : POUND DEFINE ID assignment
+    macro_definition : POUND DEFINE IDENTIFIER assignment
     """
 
 
@@ -192,15 +195,7 @@ def p_empty(p):
 parser = yacc.yacc()
 
 source_code = """
-# include <stdlib.h>
-# define TRUE 1
-
-int main (int a) {
-    int b= 0;
-    if (a =  2) {
-        b = 3;
-    }
-}
+20.5
 """
 
 lexer.input(source_code)

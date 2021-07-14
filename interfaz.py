@@ -56,21 +56,22 @@ class Ventana:
     # definicion de funciones
 
     def analizarLexico(self):
-        entrada = self.txt.get()
+        entrada = self.txt.get("1.0","end-1c")
         resultados = analizarLexico(entrada)
         if resultados == "":
             ventanaNueva("Error, no se reconocio ningun token")
 
         else:
             ventanaNueva(resultados)
-def analizarSintactico(self):
+
+    def analizarSintactico(self):
         print("Se realizara un analizador sintáctico!")
-        entrada = self.txt.get()
+        entrada = self.txt.get("1.0","end-1c")
         resultados, error = analizarSintactico(entrada)
         ventanaNueva(resultados + str(error))
 
-def limpiar(self):
-        self.txt.delete(first=0, last=10000)
+    def limpiar(self):
+        self.txt.delete("1.0", "end-1c")
 
 # Metodo de Nueva ventana para mostrar si lo ingresado e correcto o no
 

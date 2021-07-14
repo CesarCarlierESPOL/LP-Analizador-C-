@@ -5,8 +5,11 @@ reglas = []
 
 # Cesar: Aumente tokens faltantes
 tokens = [
-    "NUMBER",
+    "INTEGER",
+    "FLOATINGPOINT",
+    "BOOLEAN",
     "LETTER",
+    "STRING",
     "PLUS",
     "MINUS",
     "TIMES",
@@ -21,8 +24,9 @@ tokens = [
     "LPAREN",
     "RPAREN",
     "HEADER",
-    "ID",
+    "IDENTIFIER",
     "COMMA",
+    "POINT",
     "SEMICOLON",
     "APOST",
     "QUOTE",
@@ -42,6 +46,7 @@ reserved = {
     "int": "INT",
     "char": "CHAR",
     "float": "FLOAT",
+    "bool": "BOOL",
     "if": "IF",
     "else": "ELSE",
     "do": "DO",
@@ -69,6 +74,7 @@ t_GREATER = r"\>"
 t_LPAREN = r"\("
 t_RPAREN = r"\)"
 t_COMMA = r"\,"
+t_POINT = r"\."
 t_SEMICOLON = r"\;"
 t_APOST = r"\'"
 t_QUOTE = r"\""
@@ -97,23 +103,35 @@ def t_HEADER(t):
     return t
 
 
-def t_ID(t):
+def t_IDENTIFIER(t):
     r"[a-zA-Z_][a-zA-Z_0-9]*"
-    t.type = reserved.get(t.value, "ID")  # Check for reserved words
+    t.type = reserved.get(t.value, "IDENTIFIER")  # Check for reserved words
     return t
 
 
-def t_NUMBER(t):
-    r"\d+(\.\d+)?"
+def t_INTEGER(t):
+    r"\d+"
     t.value = int(t.value)
+    return t
+
+def t_FLOATINGPOINT(t):
+    r"\d+ \. \d+"
+    t.value = float(t.value)
     return t
 
 
 def t_LETTER(t):
     r"\'.\'"
-    t.value = t.value.replace("'", "")
+    t.value = t.value.replace("", "")
     return t
 
+def t_STRING(t):
+    r"\".*\""
+    return t
+
+def t_BOOLEAN(t):
+    r"true|false"
+    return t
 
 # Cesar: Regla para definir los numeros de linea
 def t_newline(t):
