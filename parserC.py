@@ -137,9 +137,10 @@ def p_cout_statement(p):
 def p_comparators(p):
     """
     comparators : LESS
+                | LESS EQUALS
                 | GREATER
                 | GREATER EQUALS
-                | LESS EQUALS
+                
     """
 
 def p_iteration_statement(p):
@@ -150,8 +151,10 @@ def p_iteration_statement(p):
                         | DO statement WHILE LPAREN expression RPAREN SEMICOLON
                         | FOR LPAREN type IDENTIFIER EQUALS number SEMICOLON IDENTIFIER comparators expression SEMICOLON expression EQUALS expression PLUS expression RPAREN compound_statement
                         | FOR LPAREN type IDENTIFIER EQUALS number SEMICOLON IDENTIFIER comparators expression SEMICOLON expression EQUALS expression PLUS expression RPAREN statement
-                        | FOR LPAREN type IDENTIFIER EQUALS number SEMICOLON IDENTIFIER comparators expression SEMICOLON math_expression RPAREN compound_statement
-                        | FOR LPAREN type IDENTIFIER EQUALS number SEMICOLON IDENTIFIER comparators expression SEMICOLON math_expression RPAREN statement
+                        | FOR LPAREN type IDENTIFIER EQUALS number SEMICOLON IDENTIFIER comparators expression SEMICOLON expression RPAREN compound_statement
+                        | FOR LPAREN type IDENTIFIER EQUALS number SEMICOLON IDENTIFIER comparators expression SEMICOLON expression RPAREN statement
+                        
+                        
     """
 
 
@@ -206,19 +209,22 @@ def p_type(p):
         | FLOAT
         | CHAR
         | VOID
+        | STRING
     """
 
 def p_math_expression(p):
     """
-    math_expression : expression PLUS expression
+    math_expression : 
+                    | expression PLUS PLUS
+                    | expression MINUS MINUS
+                    | expression PLUS expression
                     | expression MINUS expression
                     | expression TIMES expression
                     | expression DIVIDE expression
                     | expression MODULUS expression
-                    | expression PLUS PLUS
-                    | expression MINUS MINUS
-                    | PLUS PLUS expression 
-                    | MINUS MINUS expression 
+                    | PLUS PLUS expression
+                    | MINUS MINUS expression
+                    
     """
 
 def p_macro_definition(p):
@@ -259,12 +265,11 @@ parser = yacc.yacc()
 
 
 def analizarSintactico(s):
-    lexer.lineno = 0
+    lexer.lineno = 1
     reglas.clear()  # limpio los errores
-    print(s)
     result = str(parser.parse(s))
     print(result)
     prueba = []
     for regla in reglas:
-        prueba.append(regla)
+        prueba.append(regla+ " \n")
     return prueba

@@ -59,7 +59,8 @@ reserved = {
     "cin": "CIN",
     "using": "USING",
     "namespace": "NAMESPACE",
-    "struct": "STRUCT"
+    "struct": "STRUCT",
+    "string": "STRING"
 }
 
 tokens += list(reserved.values())
