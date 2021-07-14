@@ -122,14 +122,24 @@ def p_cout_statement(p):
                     | COUT LESS LESS expression LESS LESS expression SEMICOLON
     """
 
+def p_comparators(p):
+    """
+    comparators : LESS
+                | GREATER
+                | GREATER EQUALS
+                | LESS EQUALS
+    """
+
 def p_iteration_statement(p):
     """
     iteration_statement : WHILE LPAREN expression RPAREN compound_statement
                         | WHILE LPAREN expression RPAREN statement
                         | DO compound_statement WHILE LPAREN expression RPAREN SEMICOLON
                         | DO statement WHILE LPAREN expression RPAREN SEMICOLON
-                        | FOR LPAREN type IDENTIFIER EQUALS number SEMICOLON IDENTIFIER LESS EQUALS expression SEMICOLON IDENTIFIER EQUALS IDENTIFIER PLUS INTEGER LPAREN compound_statement
-                        | FOR LPAREN type IDENTIFIER EQUALS number SEMICOLON IDENTIFIER LESS EQUALS expression SEMICOLON IDENTIFIER EQUALS IDENTIFIER PLUS INTEGER LPAREN statement
+                        | FOR LPAREN type IDENTIFIER EQUALS number SEMICOLON IDENTIFIER comparators expression SEMICOLON expression EQUALS expression PLUS expression RPAREN compound_statement
+                        | FOR LPAREN type IDENTIFIER EQUALS number SEMICOLON IDENTIFIER comparators expression SEMICOLON expression EQUALS expression PLUS expression RPAREN statement
+                        | FOR LPAREN type IDENTIFIER EQUALS number SEMICOLON IDENTIFIER comparators expression SEMICOLON math_expression RPAREN compound_statement
+                        | FOR LPAREN type IDENTIFIER EQUALS number SEMICOLON IDENTIFIER comparators expression SEMICOLON math_expression RPAREN statement
     """
 
 
@@ -195,6 +205,8 @@ def p_math_expression(p):
                     | expression MODULUS expression
                     | expression PLUS PLUS
                     | expression MINUS MINUS
+                    | PLUS PLUS expression 
+                    | MINUS MINUS expression 
     """
 
 def p_macro_definition(p):
@@ -245,7 +257,6 @@ int main() {
 
     cout << "Sum = " << sum;
     return 0;
-}
 }
 """
 
