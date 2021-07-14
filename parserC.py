@@ -285,4 +285,8 @@ def analizarSintactico(s):
     print(s)
     result = str(parser.parse(s))
     print(result)
-    return reglas
+    prueba = []
+    for regla in reglas:
+        prueba.append(regla)
+        prueba.append("\n")
+    return prueba
