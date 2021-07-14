@@ -67,6 +67,7 @@ class Ventana:
     def analizarSintactico(self):
         print("Se realizara un analizador sintáctico!")
         entrada = self.txt.get("1.0","end-1c")
+        print(entrada)
         resultados= analizarSintactico(entrada)
         if not resultados:
             ventanaNueva(["NO HAY ERRORES"])
@@ -113,3 +114,4 @@ def ventanaNueva(resultados):
 win = tk.Tk()
 window = Ventana(win)
 win.mainloop()
+

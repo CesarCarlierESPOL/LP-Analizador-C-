@@ -162,6 +162,7 @@ lexer = lex.lex()
 
 
 def analizarLexico(data):
+    lexer.lineno = 0
     reglas.clear()  # limpio los errores
     lexer.input(data)
     resultados = ""

@@ -253,36 +253,18 @@ def p_empty(p):
 # Build the parser
 parser = yacc.yacc()
 
-source_code = """
-"""
-
-lexer.input(source_code)
-
-# Tokenize
-while True:
-    tok = lexer.token()
-    if not tok:
-        break  # No more input
-    print(tok)
-
-print("\n")
-
-lexer.lineno = 0
-
-# Parse
-parser.parse(source_code)
 
 
 # funcion del analizador
 
 
 def analizarSintactico(s):
+    lexer.lineno = 0
     reglas.clear()  # limpio los errores
-    parser.restart()
     print(s)
     result = str(parser.parse(s))
     print(result)
     prueba = []
     for regla in reglas:
-        prueba.append(regla + "\n")
+        prueba.append(regla)
     return prueba
