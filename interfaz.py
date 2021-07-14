@@ -68,7 +68,10 @@ class Ventana:
         print("Se realizara un analizador sintáctico!")
         entrada = self.txt.get("1.0","end-1c")
         resultados= analizarSintactico(entrada)
-        ventanaNueva(resultados)
+        if not resultados:
+            ventanaNueva(["NO HAY ERRORES"])
+        else:
+            ventanaNueva(resultados)
 
     def limpiar(self):
         self.txt.delete("1.0", "end-1c")

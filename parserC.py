@@ -1,3 +1,4 @@
+import ply.yacc
 import ply.yacc as yacc
 from lexerC import tokens, lexer
 reglas = []
@@ -32,6 +33,7 @@ def p_external_declaration(p):
                          | macro_definition
                          | file_inclusion
                          | namespace_statement
+                         | struct
 
     """
 
@@ -45,6 +47,7 @@ def p_declaration(p):
                 | function_call SEMICOLON
                 | array_usage SEMICOLON
                 | type array_usage SEMICOLON
+                | struct
     """
 
 
@@ -83,8 +86,8 @@ def p_number(p):
     """
 def p_array_usage(p):
     """
-    array_usage : IDENTIFIER LBRACKET elements RBRACKET
-                | IDENTIFIER LBRACKET expression RBRACKET
+    array_usage : IDENTIFIER LBRACKET expression RBRACKET
+                | IDENTIFIER LBRACKET expression RBRACKET LBRACE elements RBRACE
     """
 
 
@@ -105,6 +108,15 @@ def p_function(p):
               | return_statement
               | cout_statement
               | cin_statement
+    """
+
+def p_struct(p):
+    """
+    struct : STRUCT IDENTIFIER LBRACE declaration_list RBRACE
+            | STRUCT IDENTIFIER LBRACE declaration_list RBRACE IDENTIFIER SEMICOLON
+    declaration_list : declaration declaration_list
+                    | empty
+
     """
 
 def p_namespace_statement(p):
@@ -242,22 +254,6 @@ def p_empty(p):
 parser = yacc.yacc()
 
 source_code = """
-#include <iostream>
-using namespace std;
-
-int main() {
-    int n, sum = 0;
-
-    cout << "Enter a positive integer: ";
-    cin >> n;
-
-    for (int i = 1; i <= n; ++i) {
-        sum += i;
-    }
-
-    cout << "Sum = " << sum;
-    return 0;
-}
 """
 
 lexer.input(source_code)
@@ -282,11 +278,11 @@ parser.parse(source_code)
 
 def analizarSintactico(s):
     reglas.clear()  # limpio los errores
+    parser.restart()
     print(s)
     result = str(parser.parse(s))
     print(result)
     prueba = []
     for regla in reglas:
-        prueba.append(regla)
-        prueba.append("\n")
+        prueba.append(regla + "\n")
     return prueba
