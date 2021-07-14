@@ -91,6 +91,7 @@ def p_type(p):
          | FLOAT
          | CHAR
          | VOID
+         | BOOL
     """
 
 
@@ -195,7 +196,7 @@ def p_empty(p):
 parser = yacc.yacc()
 
 source_code = """
-20.5
+sfasf.h
 """
 
 lexer.input(source_code)

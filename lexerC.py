@@ -5,8 +5,8 @@ reglas = []
 
 # Cesar: Aumente tokens faltantes
 tokens = [
-    "INTEGER",
     "FLOATINGPOINT",
+    "INTEGER",
     "BOOLEAN",
     "LETTER",
     "STRING",
@@ -108,16 +108,17 @@ def t_IDENTIFIER(t):
     t.type = reserved.get(t.value, "IDENTIFIER")  # Check for reserved words
     return t
 
+def t_FLOATINGPOINT(t):
+    r"\d+ \. \d+"
+    t.value = float(t.value)
+    return t
 
 def t_INTEGER(t):
     r"\d+"
     t.value = int(t.value)
     return t
 
-def t_FLOATINGPOINT(t):
-    r"\d+ \. \d+"
-    t.value = float(t.value)
-    return t
+
 
 
 def t_LETTER(t):
