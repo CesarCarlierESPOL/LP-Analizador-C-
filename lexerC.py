@@ -26,7 +26,6 @@ tokens = [
     "HEADER",
     "IDENTIFIER",
     "COMMA",
-    "POINT",
     "SEMICOLON",
     "APOST",
     "QUOTE",
@@ -37,7 +36,7 @@ tokens = [
     "POUND",
     "COMMENT",
     "COMMENTBLOCK",
-    "ASSIGN",
+    "ISEQUAL",
     "EOF"
 ]
 
@@ -68,13 +67,12 @@ t_MODULUS = r"\%"
 t_AND = r"\&\&"
 t_OR = r"\|\|"
 t_NOT = r"\!"
-t_EQUALS = r"\=\="
+t_ISEQUAL = r"\=\="
 t_LESS = r"\<"
 t_GREATER = r"\>"
 t_LPAREN = r"\("
 t_RPAREN = r"\)"
 t_COMMA = r"\,"
-t_POINT = r"\."
 t_SEMICOLON = r"\;"
 t_APOST = r"\'"
 t_QUOTE = r"\""
@@ -83,7 +81,7 @@ t_RBRACE = r"\}"
 t_LBRACKET = r"\["
 t_RBRACKET = r"\]"
 t_POUND = r"\#"
-t_ASSIGN = r"\="
+t_EQUALS = r"\="
 t_EOF = r"\$"
 
 
@@ -102,6 +100,9 @@ def t_HEADER(t):
     r"[a-zA-Z_][a-zA-Z_0-9]*\.h"
     return t
 
+def t_BOOLEAN(t):
+    r"true|false"
+    return t
 
 def t_IDENTIFIER(t):
     r"[a-zA-Z_][a-zA-Z_0-9]*"
@@ -118,9 +119,6 @@ def t_INTEGER(t):
     t.value = int(t.value)
     return t
 
-
-
-
 def t_LETTER(t):
     r"\'.\'"
     t.value = t.value.replace("", "")
@@ -130,9 +128,7 @@ def t_STRING(t):
     r"\".*\""
     return t
 
-def t_BOOLEAN(t):
-    r"true|false"
-    return t
+
 
 # Cesar: Regla para definir los numeros de linea
 def t_newline(t):

@@ -16,19 +16,45 @@ start = "program"
 
 def p_program(p):
     """
-    program : function program
-            | external-declaration program
-            | empty
+    program : empty
     """
+
+
+
 def p_empty(p):
     "empty :"
 
+def p_expression(p):
+    """
+    expression : literal
+    """
+
+def p_math_expression(p):
+    """math_expression : literal PLUS literal"""
+
+def p_type(p):
+    """
+    type : INT
+        | CHAR
+        | FLOAT
+        | BOOL
+        | STRING
+        | VOID
+    """
+def literal(p):
+    """
+    literal : INTEGER
+            | FLOATINGPOINT
+            | BOOLEAN
+            | LETTER
+            | STRING
+    """
 
 # Build the parser
 parser = yacc.yacc()
 
 source_code = """
-sfasf.h
+sa
 """
 
 lexer.input(source_code)

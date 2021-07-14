@@ -4,7 +4,7 @@ reglas = []
 success = True
 
 precedence = (
-    ("right", "ASSIGN"),
+    ("right", "ISEQUAL"),
     ("left", "AND", "OR"),
     ("left", "LESS", "GREATER", "EQUALS"),
     ("left", "PLUS", "MINUS"),
@@ -44,60 +44,35 @@ def p_declaration(p):
 
 def p_assignment(p):
     """
-    assignment : IDENTIFIER ASSIGN assignment
-               | IDENTIFIER ASSIGN function_call
-               | IDENTIFIER ASSIGN array_usage
-               | array_usage ASSIGN assignment
-               | IDENTIFIER COMMA assignment
-               | INTEGER COMMA assignment
-               | IDENTIFIER PLUS assignment
-               | IDENTIFIER MINUS assignment
-               | IDENTIFIER TIMES assignment
-               | IDENTIFIER DIVIDE assignment
-               | IDENTIFIER MODULUS assignment
-               | INTEGER PLUS assignment
-               | INTEGER MINUS assignment
-               | INTEGER TIMES assignment
-               | INTEGER DIVIDE assignment
-               | INTEGER MODULUS assignment
-               | APOST assignment APOST
-               | LPAREN assignment RPAREN
-               | MINUS assignment
-               | INTEGER PLUS PLUS
-               | IDENTIFIER PLUS PLUS
-               | array_usage PLUS PLUS
-               | INTEGER MINUS MINUS
-               | IDENTIFIER MINUS MINUS
-               | array_usage MINUS MINUS
-               | BOOLEAN
-               | FLOATINGPOINT
-               | INTEGER
-               | STRING
-               | IDENTIFIER
-               | LETTER
+    assignment : IDENTIFIER EQUALS expression
+                | IDENTIFIER PLUS EQUALS expression
+                | IDENTIFIER MINUS EQUALS expression
     """
 
-
+    
 def p_function_call(p):
     """
     function_call : IDENTIFIER LPAREN RPAREN
-                  | IDENTIFIER LPAREN assignment RPAREN
+                  | IDENTIFIER LPAREN expression RPAREN
+                  | IDENTIFIER LPAREN elements RPAREN
     """
 
 
-def p_type(p):
+def p_elements(p):
     """
-    type : INT
-         | FLOAT
-         | CHAR
-         | VOID
-         | BOOL
+    elements : COMMA expression
+             | COMMA expression elements
     """
 
-
+def p_number(p):
+    """
+    number : INTEGER
+           | FLOATINGPOINT
+    """
 def p_array_usage(p):
     """
-    array_usage : IDENTIFIER LBRACKET assignment RBRACKET
+    array_usage : IDENTIFIER LBRACKET elements RBRACKET
+                | IDENTIFIER LBRACKET expression RBRACKET
     """
 
 
@@ -145,19 +120,52 @@ def p_return_statement(p):
                      | RETURN expression SEMICOLON
     """
 
+def p_conditional_expression(p):
+    """
+    conditional_expression : expression ISEQUAL expression
+                           | expression NOT EQUALS expression
+                           | expression LESS expression
+                           | expression LESS EQUALS expression
+                           | expression GREATER expression
+                           | expression GREATER EQUALS expression
+                           | expression AND expression
+                           | expression OR expression
+                           | NOT expression
+    """
 
 def p_expression(p):
     """
-    expression : expression EQUALS expression
-               | expression LESS expression
-               | expression GREATER expression
-               | expression AND expression
-               | expression OR expression
-               | NOT expression
+    expression : BOOLEAN
+               | number
+               | STRING
+               | IDENTIFIER
+               | LETTER
                | assignment
                | array_usage
+               | function_call
+               | math_expression
+               | conditional_expression
     """
 
+def p_type(p):
+    """
+    type : BOOL
+        | INT
+        | FLOAT
+        | CHAR
+        | VOID
+    """
+
+def p_math_expression(p):
+    """
+    math_expression : expression PLUS expression
+                    | expression MINUS expression
+                    | expression TIMES expression
+                    | expression DIVIDE expression
+                    | expression MODULUS expression
+                    | expression PLUS PLUS
+                    | expression MINUS MINUS
+    """
 
 def p_macro_definition(p):
     """
@@ -196,7 +204,13 @@ def p_empty(p):
 parser = yacc.yacc()
 
 source_code = """
-sfasf.h
+while nextTerm <= n {
+        cout << nextTerm << ", ";
+        t1 = t2;
+        t2 = nextTerm;
+        nextTerm = t1 + t2;
+    }
+    
 """
 
 lexer.input(source_code)
