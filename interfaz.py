@@ -67,8 +67,8 @@ class Ventana:
     def analizarSintactico(self):
         print("Se realizara un analizador sintáctico!")
         entrada = self.txt.get("1.0","end-1c")
-        resultados, error = analizarSintactico(entrada)
-        ventanaNueva(resultados + str(error))
+        resultados= analizarSintactico(entrada)
+        ventanaNueva(resultados)
 
     def limpiar(self):
         self.txt.delete("1.0", "end-1c")

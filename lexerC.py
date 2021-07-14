@@ -50,10 +50,15 @@ reserved = {
     "else": "ELSE",
     "do": "DO",
     "while": "WHILE",
+    "for": "FOR",
     "return": "RETURN",
     "void": "VOID",
     "define": "DEFINE",
-    "include": "INCLUDE"
+    "include": "INCLUDE",
+    "cout": "COUT",
+    "cin": "CIN",
+    "using": "USING",
+    "namespace": "NAMESPACE"
 }
 
 tokens += list(reserved.values())

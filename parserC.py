@@ -16,9 +16,11 @@ start = "program"
 
 def p_program(p):
     """
-    program : function program
+    program : function
+            | function program
             | external-declaration program
-            | empty
+            | external-declaration
+            | expression
     """
 
 
@@ -29,12 +31,16 @@ def p_external_declaration(p):
                          | type array_usage SEMICOLON
                          | macro_definition
                          | file_inclusion
+                         | namespace_statement
+
     """
 
 
 def p_declaration(p):
     """
-    declaration : type assignment SEMICOLON
+    declaration : type IDENTIFIER SEMICOLON
+                | type IDENTIFIER identifiers SEMICOLON
+                | type assignment SEMICOLON
                 | assignment SEMICOLON
                 | function_call SEMICOLON
                 | array_usage SEMICOLON
@@ -49,7 +55,13 @@ def p_assignment(p):
                 | IDENTIFIER MINUS EQUALS expression
     """
 
-    
+def p_identifiers(p):
+    """
+    identifiers : COMMA IDENTIFIER
+                | COMMA assignment
+                | COMMA IDENTIFIER identifiers
+    """
+
 def p_function_call(p):
     """
     function_call : IDENTIFIER LPAREN RPAREN
@@ -90,9 +102,25 @@ def p_function(p):
     statement : iteration_statement
               | declaration
               | selection_statement
-              | return-statement
+              | return_statement
+              | cout_statement
+              | cin_statement
     """
 
+def p_namespace_statement(p):
+    """
+    namespace_statement : USING NAMESPACE IDENTIFIER SEMICOLON"""
+
+def p_cin_statement(p):
+    """
+    cin_statement : CIN GREATER GREATER IDENTIFIER SEMICOLON
+    """
+
+def p_cout_statement(p):
+    """
+    cout_statement : COUT LESS LESS expression SEMICOLON
+                    | COUT LESS LESS expression LESS LESS expression SEMICOLON
+    """
 
 def p_iteration_statement(p):
     """
@@ -100,6 +128,8 @@ def p_iteration_statement(p):
                         | WHILE LPAREN expression RPAREN statement
                         | DO compound_statement WHILE LPAREN expression RPAREN SEMICOLON
                         | DO statement WHILE LPAREN expression RPAREN SEMICOLON
+                        | FOR LPAREN type IDENTIFIER EQUALS number SEMICOLON IDENTIFIER LESS EQUALS expression SEMICOLON IDENTIFIER EQUALS IDENTIFIER PLUS INTEGER LPAREN compound_statement
+                        | FOR LPAREN type IDENTIFIER EQUALS number SEMICOLON IDENTIFIER LESS EQUALS expression SEMICOLON IDENTIFIER EQUALS IDENTIFIER PLUS INTEGER LPAREN statement
     """
 
 
@@ -116,7 +146,7 @@ def p_selection_statement(p):
 
 def p_return_statement(p):
     """
-    return-statement : RETURN SEMICOLON
+    return_statement : RETURN SEMICOLON
                      | RETURN expression SEMICOLON
     """
 
@@ -177,40 +207,46 @@ def p_file_inclusion(p):
     """
     file_inclusion : POUND INCLUDE LESS HEADER GREATER
                    | POUND INCLUDE QUOTE HEADER QUOTE
+                   | POUND INCLUDE LESS IDENTIFIER GREATER
+                   | POUND INCLUDE QUOTE IDENTIFIER QUOTE
     """
 
 # Error rule for syntax errors
 
 
+
+
 def p_error(p):
-    if p is not None:
-        reglas.append("Syntax Error")
-
-    else:
-        print("Syntax Error!!")
-        reglas.append("Syntax Error")  # añade el error a el arreglo
-
-# def p_error(p):
-#    if p:
-#        print("Syntax error near '%s', line '%s'" % (p.value, p.lineno - 1))
-
+    if p:
+        texto = "Syntax error near '%s', line '%s', '%s'" % (p.value, p.lineno - 1,p.type)
+        print(texto)
+        reglas.append(texto)
 
 def p_empty(p):
     "empty :"
-    pass
 
 
 # Build the parser
 parser = yacc.yacc()
 
 source_code = """
-while nextTerm <= n {
-        cout << nextTerm << ", ";
-        t1 = t2;
-        t2 = nextTerm;
-        nextTerm = t1 + t2;
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n, sum = 0;
+
+    cout << "Enter a positive integer: ";
+    cin >> n;
+
+    for (int i = 1; i <= n; ++i) {
+        sum += i;
     }
-    
+
+    cout << "Sum = " << sum;
+    return 0;
+}
+}
 """
 
 lexer.input(source_code)
@@ -229,10 +265,6 @@ lexer.lineno = 0
 # Parse
 parser.parse(source_code)
 
-if success:
-    print("Código Válido")
-else:
-    print("Código no Válido")
 
 # funcion del analizador
 
@@ -242,4 +274,4 @@ def analizarSintactico(s):
     print(s)
     result = str(parser.parse(s))
     print(result)
-    return result, reglas
+    return reglas
